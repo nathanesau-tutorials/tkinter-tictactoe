@@ -32,13 +32,6 @@ class Board:
 
     def update(self, move):
         self.data[move.row][move.col] = move.symbol
-        
-    def print(self):
-        for row in range(len(self.data)):
-            for col in range(len(self.data[0])):
-                print(self.data[row][col], end=' ')
-            print()
-        print()
 
 class Move:
     def __init__(self, symbol, row, col):
@@ -68,46 +61,6 @@ class GameController:
     def __init__(self):
         self.board = Board()
         self.ai = AI('O')
-
-    def getHumanMove(self):
-        valid = False
-        while valid == False:
-            row,col=input('Enter move as row, col: ').split(',')
-            try:
-                row = int(row)
-                col = int(col)
-            except ValueError:
-                print("row, col inputs must be integers")
-                continue
-            if row < 0 or row > 2 or col < 0 or col > 2:
-                print("row, col inputs must be between 0 and 2")
-            elif (self.board.data[row][col] != 'B'):
-                print("row, col square must be blank")
-            else:
-                valid = True
-        return Move('X', int(row), int(col))
-
-    def runGameTerminal(self): # run game in terminal (NOT USED)
-        self.board.print()
-        while(self.board.getWinner() == 'B'):
-            humanMove = self.getHumanMove()
-            self.board.update(humanMove)
-            self.board.print() 
-            if self.board.getWinner() == 'X':
-                print('X wins!')
-                return
-            elif self.board.isFull():
-                print("No winner")
-                return
-            else:
-                aiMove = self.ai.getMove(self.board)
-                self.board.update(aiMove)
-                self.board.print()
-                if self.board.getWinner() == 'O':
-                    print('O wins!')
-                elif self.board.isFull():
-                    print("No winner")
-                    return
 
 class GUI(tk.Tk):
     def __init__(self):
